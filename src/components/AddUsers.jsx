@@ -1,3 +1,5 @@
+
+// lesson for addUsers
 import { useState } from "react";
 import axios from "axios";
 
@@ -28,7 +30,7 @@ export default function AddUsers() {
                 name="name" 
                 onChange={(event) => setName(event.target.value)}>
                 </input>
-                <label htmlFor="name"><Email></Email>:</label>
+                <label htmlFor="name">Email:</label>
                 <input 
                 type="text" 
                 name="name" 

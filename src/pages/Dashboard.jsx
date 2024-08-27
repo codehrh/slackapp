@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import UserService from "../services/UserService";
 
-function Dashboard(props) {
+export default function Dashboard(props) {
     const { setIsLoggedIn, user } = props;
     const [ userList, setUserList ] = useState ([]);
     

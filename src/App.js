@@ -4,22 +4,27 @@ import { useEffect, useState } from 'react';
 import Dashboard from './pages/Dashboard';
 import { API_URL } from './constants/Constants';
 import axios from 'axios';
+import SignUp from './pages/SignUp';
 
 //lesson
 import Users from "./components/Users";
 import AddUsers from "./components/AddUsers";
 
 function App() {
-  const [ isLoggedIn, setLoggedIn ] = useState(false)
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false)
   const [ email, setEmail ] = useState();
   const [ password, setPassword ] = useState();
   const [ user, setUser ] = useState(() => 
     JSON.parse(localStorage.getItem("user"))
   );
 
+  //for Signup
+
+  const [showSignUp, setShowSignup] = useEffect(false);
+
   useEffect(()=>{
     if(user){
-      setIsLogged(true)
+      setIsLoggedIn(true)
       localStorage.setItem("user", JSON.stringify(user))
     }
   },[user])
@@ -33,14 +38,16 @@ function App() {
         const loginCredentials = {
           email, password
         }
-        const response = await axios.post(`${API_URL}/auth/sign_in`, loginCredentials)
+        const response = await axios.post(
+          `${API_URL}/auth/sign_in`, 
+          loginCredentials)
         const {data, headers} = response;
 
         if (data && headers) {
           const accessToken = headers["access-token"];
           const expiry = headers["expiry"]
           const client = headers["client"]
-          const uid = header["uid"]
+          const uid = headers["uid"]
 
           setUser({
             accessToken, 
@@ -59,26 +66,37 @@ function App() {
       }
     }
 
+    function toggleSignup() {
+      showSignUp ? setShowSignup(false) : setShowSignup(true);
+    }
+
   return (
     <div className="App">
-      {isLoggedIn && (
-      <form onSubmit={handleSubmit}>
-        <label>Email:</label>
-        <input 
-        type="email"
-        onChange={(event) => setEmail(event.target.value)}>
-        </input>
-        <label>Email:</label>
-        <input 
-        type="email"
-        onChange={(event) => setEmail(event.target.value)}>
-        </input>
+      {!isLoggedIn && (
+        <form onSubmit={handleSubmit}>
+          <label>Email:</label>
+          <input 
+            type="email"
+            onChange={(event) => setEmail(event.target.value)}
+          ></input>
+          <label>Email:</label>
+          <input 
+            type="password"
+            onChange={(event) => setPassword(event.target.value)}
+          ></input>
+          <button type="submit">Login</button>
+          <br/>
+          <button onClick={toggleSignup}>Sign Up</button>
         </form>
+      )}
+      {showSignUp && (
+        <SignUp></SignUp>
+      )}
+      {isLoggedIn && (
         <Dashboard setIsLoggedIn={setIsLoggedIn} user={user}></Dashboard>
       )}
     </div>
-  )
-
+  );
 }
 
 export default App;

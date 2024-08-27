@@ -7,7 +7,7 @@ import axios from "axios";
 function Users() {
     const [users, setUsers] = useState([]);
 
-    useEffect(() = {
+    useEffect(()=> {
         if(users.length === 0) {
             axios
                 .get("https://jsonplaceholder.typicode.com/users")
