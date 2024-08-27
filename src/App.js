@@ -20,7 +20,7 @@ function App() {
 
   //for Signup
 
-  const [showSignUp, setShowSignup] = useEffect(false);
+  const [showSignup, setShowSignup] = useState(false);
 
   useEffect(()=>{
     if(user){
@@ -67,7 +67,7 @@ function App() {
     }
 
     function toggleSignup() {
-      showSignUp ? setShowSignup(false) : setShowSignup(true);
+      showSignup ? setShowSignup(false) : setShowSignup(true);
     }
 
   return (
@@ -89,8 +89,11 @@ function App() {
           <button onClick={toggleSignup}>Sign Up</button>
         </form>
       )}
-      {showSignUp && (
-        <SignUp></SignUp>
+      {showSignup && (
+        <SignUp>
+          setShowSignup={setShowSignup}
+          setIsLoggedIn={setIsLoggedIn}
+        </SignUp>
       )}
       {isLoggedIn && (
         <Dashboard setIsLoggedIn={setIsLoggedIn} user={user}></Dashboard>

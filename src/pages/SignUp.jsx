@@ -2,7 +2,7 @@ import { useState } from "react";
 import UserService from "../services/UserService";
 
 
-export default function SignUp() {
+export default function SignUp(props) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [password_confirmation, setPasswordConfirmation] = useState();
