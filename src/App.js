@@ -7,8 +7,8 @@ import axios from 'axios';
 import SignUp from './pages/SignUp';
 
 //lesson
-import Users from "./components/Users";
-import AddUsers from "./components/AddUsers";
+// import Users from "./components/Users";
+// import AddUsers from "./components/AddUsers";
 
 function App() {
   const [ isLoggedIn, setIsLoggedIn ] = useState(false)
@@ -79,14 +79,14 @@ function App() {
             type="email"
             onChange={(event) => setEmail(event.target.value)}
           ></input>
-          <label>Email:</label>
+          <label>Password:</label>
           <input 
             type="password"
             onChange={(event) => setPassword(event.target.value)}
           ></input>
           <button type="submit">Login</button>
           <br/>
-          <button onClick={toggleSignup}>Sign Up</button>
+          <button type="button" onClick={toggleSignup}>Sign Up</button>
         </form>
       )}
       {showSignup && (
