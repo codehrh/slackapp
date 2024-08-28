@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ChannelService from "../services/ChannelService";
 
+//Line 41 need to finish once video has been checked.
+
 export default function Dashboard(props) {
     const { setIsLoggedIn, user } = props;
     const [ channels, setChannels ] = useState ([]);
