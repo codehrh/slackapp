@@ -1,9 +1,9 @@
 
 import './App.css';
 import { useEffect, useState } from 'react';
-import Dashboard from './pages/Dashboard';
 import { API_URL } from './constants/Constants';
 import axios from 'axios';
+import Dashboard from './pages/Dashboard';
 import SignUp from './pages/SignUp';
 
 //lesson
