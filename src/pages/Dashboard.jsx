@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import UserService from "../services/UserService";
+// import { Navigate, useNavigate} from "react-router";
 
 export default function Dashboard(props) {
     const { setIsLoggedIn, user } = props;
@@ -24,6 +25,7 @@ export default function Dashboard(props) {
     return (
         <div>
             <h1>This is my Dashboard</h1>
+            <button onclick={logout}>Log Out</button>
             {/* mapping of users happens here */}
             {userList &&
                 userList.map((students) => {
@@ -36,7 +38,6 @@ export default function Dashboard(props) {
                     );
                 })};
             {!userList && <div>No Users Available </div>}
-            <button onclick={logout}></button>
         </div>
     );
 }

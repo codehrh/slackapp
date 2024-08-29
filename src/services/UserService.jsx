@@ -1,6 +1,8 @@
 import { API_URL } from "../constants/Constants";
 import axios from "axios";
 
+//main use is for account creation and user checking
+
 const UserService = {
     getUsers: async function (user){
         try{
