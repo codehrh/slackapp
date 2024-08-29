@@ -1,5 +1,7 @@
 import { useState } from "react";
 import UserService from "../services/UserService";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faKey , faUserCheck} from '@fortawesome/free-solid-svg-icons'
 
 
 export default function SignUp(props) {
@@ -33,10 +35,15 @@ export default function SignUp(props) {
                 <input type="password" onChange={(event)=> setPassword(event.target.value)}></input>
                 <label>Password Confirmation:</label>
                 <input type="password" onChange={(event)=> setPasswordConfirmation(event.target.value)}></input>
-                <button type="submit">Submit</button>
+                <div className='two-buttons'>
+               
+                <button type="submit" className="secondary-button"><FontAwesomeIcon icon={faUserCheck} className='icon'/>Submit</button>
+                <br/>
+                <button onClick={handleLogin}><FontAwesomeIcon icon={faKey} className='icon'/>Login</button>
+                </div>
             </form>
             <br></br>
-            <button onClick={handleLogin}>Login</button>
+           
         </div>
     )
 }

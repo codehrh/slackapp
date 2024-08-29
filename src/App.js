@@ -89,9 +89,10 @@ function App() {
               onChange={(event) => setPassword(event.target.value)}
             ></input>
             <div className='two-buttons'>
-              <button type="submit"><FontAwesomeIcon icon={faKey} className='icon'/>Login</button>
-              <br />
+          
               <button type="button" className="secondary-button" onClick={toggleSignup}><FontAwesomeIcon icon={faUserPlus} className='icon'/>Sign Up</button>
+              <br/>
+              <button type="submit"><FontAwesomeIcon icon={faKey} className='icon'/>Login</button>
             </div>
           </form>
         )}
