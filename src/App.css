@@ -1,39 +1,77 @@
-.App {
-  text-align: center;
+:root {
+  --dark-purple: #4a154b;
+  --medium-purple: #F0CEF3;
+  --light-purple: #ede6ed;
+  
+}
+
+* {
   font-family: "Inter", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1, h2, h3, h4, h5, h6 {
+  font-family: "SUSE", sans-serif;
+  color: var(--dark-purple);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  height: 100vh;
+  
+  background-color: var(--medium-purple);
 }
 
-.App-link {
-  color: #61dafb;
+.login {
+  background-color: white;
+  min-width:350px;
+  max-width: 30%;
+  padding: 2%;
+  border-radius: 25px;
+  display: flex;
+  gap: 100px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+form {
+  width: 100%;
+}
+
+input {
+  width: 95%;
+  padding: 1%;
+  margin-top: 2%;
+}
+
+label {
+  font-weight: bold;
+}
+
+
+button {
+  border: none;
+  padding: 5%;
+  border-radius: 25px;
+  font-weight: bold;
+  background-color: var(--dark-purple);
+  color: var(--medium-purple);
+}
+
+.two-buttons {
+  padding-top: 8%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1%;
+}
+
+.secondary-button {
+  background-color: var(--medium-purple);
+  color: var(--dark-purple);
+}
+
+.icon {
+  aspect-ratio: 1;
+  padding-right: 2px;
 }
