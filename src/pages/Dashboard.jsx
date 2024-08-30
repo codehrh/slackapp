@@ -51,7 +51,7 @@ export default function Dashboard({ setIsLoggedIn, user }) {
                     );
                 })
             ) : (
-                <div>No Users Available</div>
+                <div>Loading . . .</div>
             )}
         </div>
     );
