@@ -21,6 +21,7 @@ export default function Dashboard(props) {
 
 
     function logout() {
+        console.log("Logging out");
         localStorage.clear();
         setIsLoggedIn(false);
     }
@@ -41,7 +42,7 @@ export default function Dashboard(props) {
                 })};
             {!channels && <div>No Channels Available</div>}
             <SendMessage></SendMessage>
-            <button onclick={logout}></button>
+            <button onClick={logout}></button>
         </div>
     );
 }
