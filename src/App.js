@@ -12,6 +12,23 @@ export default function App() {
   const [user, setUser] = useState(null); 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+const router = createBrowserRouter([
+
+  {
+    path: "/",
+    element: <Login/>,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard/>,
+  },
+
+])
+
+export default function App() {
+  const [user, setUser] = useState(null); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const router = createBrowserRouter([
     {
       path: "/",
