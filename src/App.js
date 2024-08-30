@@ -8,24 +8,7 @@ import Login from './pages/Login';
 // react router imports
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-export default function App() {
-  const [user, setUser] = useState(null); 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-const router = createBrowserRouter([
-
-  {
-    path: "/",
-    element: <Login/>,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard/>,
-  },
-
-])
-
-export default function App() {
+function App() {
   const [user, setUser] = useState(null); 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -46,3 +29,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;
