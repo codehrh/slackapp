@@ -25,7 +25,7 @@ export default function Dashboard(props) {
     return (
         <div>
             <h1>This is my Dashboard</h1>
-            <button onclick={logout}>Log Out</button>
+            <button onClick={logout}>Log Out</button>
             {/* mapping of users happens here */}
             {userList &&
                 userList.map((students) => {
