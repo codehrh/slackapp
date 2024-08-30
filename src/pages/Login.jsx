@@ -29,7 +29,7 @@ function Login() {
     if (user) {
       setIsLoggedIn(true)
       localStorage.setItem("user", JSON.stringify(user))
-      navigate('./Dashboard');
+      navigate('/dashboard');
     }
   }, [user])
 

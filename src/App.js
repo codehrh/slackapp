@@ -1,4 +1,3 @@
-
 import './App.css';
 
 //unused imports
@@ -25,13 +24,8 @@ const router = createBrowserRouter([
     element: <Login/>,
   },
   {
-    path: "/Dashboard",
+    path: "/dashboard",
     element: <Dashboard/>,
-    // children: [
-    //   {
-    //     index: true,
-    //   }
-    // ]
   },
 
 ])
@@ -41,8 +35,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <RouterProvider router={router}>
-      </RouterProvider>
+      <RouterProvider router={router}/>
     </div>
   );
 }
