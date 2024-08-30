@@ -1,9 +1,7 @@
 import './App.css';
-import { useState } from 'react';
-// page imports
+import { useState, useEffect } from 'react';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
-// react router imports
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 <<<<<<< HEAD
 export default function App() {
@@ -27,18 +25,35 @@ export default function App() {
 =======
 
 function App() {
->>>>>>> e04cf52b91d0a18e1348cabd0a6e4b8e462fcddb
-  const [user, setUser] = useState(null); 
+  const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const updateUser = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(!!userData);
+    if (userData) {
+      localStorage.setItem('user', JSON.stringify(userData));
+    } else {
+      localStorage.removeItem('user');
+    }
+  };
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>, 
+      element: <Login setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>, 
     },
     {
       path: "/dashboard",
-      element: <Dashboard user={user} setIsLoggedIn={setIsLoggedIn}/>, 
+      element: <Dashboard user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>, 
     },
   ]);
   return (
