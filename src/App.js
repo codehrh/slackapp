@@ -15,11 +15,11 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>, // Pass setUser to Login to update user state
+      element: <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>, 
     },
     {
       path: "/dashboard",
-      element: <Dashboard user={user} setIsLoggedIn={setIsLoggedIn}/>, // Pass user data to Dashboard
+      element: <Dashboard user={user} setIsLoggedIn={setIsLoggedIn}/>, 
     },
   ]);
 
