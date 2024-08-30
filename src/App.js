@@ -3,8 +3,8 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import { API_URL } from './constants/Constants';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKey , faUserPlus} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faKey , faUserPlus} from '@fortawesome/free-solid-svg-icons';
 import Dashboard from './pages/Dashboard';
 import SignUp from './pages/SignUp';
 
