@@ -19,6 +19,7 @@ export default function Dashboard(props) {
 
 
     function logout() {
+        console.log("Logging out clicked");
         localStorage.clear();
         setIsLoggedIn(false);
     }
