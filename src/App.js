@@ -1,48 +1,31 @@
-
 import './App.css';
+import { useState } from 'react';
 
-//unused imports
-
-// import { useEffect, useState } from 'react';
-// import { API_URL } from './constants/Constants';
-// import axios from 'axios';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faKey , faUserPlus} from '@fortawesome/free-solid-svg-icons'
-// import SignUp from './pages/SignUp';
-
-//page imports
+// page imports
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 
-//react router imports
+// react router imports
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-
-const router = createBrowserRouter([
-
-  {
-    path: "/",
-    element: <Login/>,
-  },
-  {
-    path: "/Dashboard",
-    element: <Dashboard/>,
-    // children: [
-    //   {
-    //     index: true,
-    //   }
-    // ]
-  },
-
-])
-
 export default function App() {
-  
+  const [user, setUser] = useState(null); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>, // Pass setUser to Login to update user state
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard user={user} setIsLoggedIn={setIsLoggedIn}/>, // Pass user data to Dashboard
+    },
+  ]);
 
   return (
     <div className="App">
-      <RouterProvider router={router}>
-      </RouterProvider>
+      <RouterProvider router={router} />
     </div>
   );
 }
