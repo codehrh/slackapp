@@ -1,25 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import MessageUserService from '../services/MessageUserService';
+import React from 'react';
 
-function ReceiveMessage({ user, selectedUser }) {
-    const [messages, setMessages] = useState([]);  // State to store messages
-
-    useEffect(() => {
-        async function fetchMessages() {
-            if (!selectedUser) return;
-
-            try {
-                const messagesData = await MessageUserService.getMessages(selectedUser, user);
-                console.log("Fetched messages:", messagesData); // Debugging line
-                setMessages(messagesData || []);  // Update the messages state with the fetched data
-            } catch (error) {
-                console.error('Error fetching messages:', error);
-            }
-        }
-
-        fetchMessages();
-    }, [selectedUser, user]);
-
+function ReceiveMessage({ messages }) {
     return (
         <div className="message-list">
             {messages.length > 0 ? (
