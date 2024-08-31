@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard';
 import MessageDashboard from './pages/MessageDashboard';
 import Login from './pages/Login';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import ChannelCreation from './pages/ChannelCreation';
+import Channels from './pages/Channels';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -37,9 +39,17 @@ function App() {
       element: <Dashboard user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>,
     },
     {
-      path: "/messages/:channelId", // Ensure this route is defined
+      path: "/messages/:channelId",
       element: <MessageDashboard user={user} />
     },
+    {
+      path: "/channels",
+      element: <Channels user={user} />
+    },
+    {
+      path: "/create-channel",
+      element: <ChannelCreation user={user} />
+    }
   ]);
 
   return (
