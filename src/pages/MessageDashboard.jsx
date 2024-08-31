@@ -1,48 +1,75 @@
-import { useEffect, useState } from "react";
-import ChannelService from "../services/ChannelService";
+import { useEffect, useState, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import MessageUserService from "../services/MessageUserService";
+import SendMessage from '../components/SendMessage'; 
+import ReceiveMessage from '../components/ReceiveMessage'; 
 
-//Line 41 need to finish once video has been checked.
+export default function MessageDashboard({ user }) {
+    const { channelId } = useParams();
+    const [interactedUsers, setInteractedUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(channelId || "");
+    const [messages, setMessages] = useState([]);
 
-export default function Dashboard(props) {
-    const { setIsLoggedIn, user } = props;
-    const [ channels, setChannels ] = useState ([]);
-    const [ channelFlag, setChannelFlag ] = useState(true);
-    
+    const fetchInteractedUsers = useCallback(async () => {
+        try {
+            const users = await MessageUserService.getInteractedUsers(user);
+            setInteractedUsers(users || []);
+        } catch (error) {
+            console.error("Error fetching interacted users:", error);
+        }
+    }, [user]);
 
-    useEffect(()=>{
-       async function getChannels(){
-        await ChannelService.getChannels(user, setChannels)
-       }
-       if(channelFlag){
-        setChannelFlag(false);
-        getChannels();
-       }
-    }, [user, channelFlag]);
+    const fetchMessages = useCallback(async () => {
+        if (!selectedUser) return;
 
+        try {
+            const messagesData = await MessageUserService.getMessages(selectedUser, user);
+            console.log("Messages fetched for user:", selectedUser, messagesData); // Debugging line
+            setMessages(messagesData || []);
+        } catch (error) {
+            console.error("Error fetching messages:", error);
+        }
+    }, [selectedUser, user]);
 
-    function logout() {
-        console.log("Logging out");
-        localStorage.clear();
-        setIsLoggedIn(false);
-    }
+    useEffect(() => {
+        fetchInteractedUsers();
+    }, [fetchInteractedUsers]);
+
+    useEffect(() => {
+        fetchMessages();
+    }, [selectedUser, fetchMessages]);
+
     return (
-        <div>
-            <h1>This is my Dashboard</h1>
-            {/* mapping of channels happens here */}
-            {channels &&
-                channels.map((channel) => {
-                    const { id, name, owner_id } = channel;
-                    return (
-                        <div key={id}>
-                            <p>Channel ID: {id}</p>
-                            <p>Channel Name: {name}</p>
-                            <p>Owner ID: {owner_id}</p>
-                        </div>
-                    );
-                })};
-            {!channels && <div>No Channels Available</div>}
-            <SendMessage></SendMessage>
-            <button onClick={logout}></button>
+        <div className="message-dashboard">
+            <main className="message-content">
+                <header className="message-header">
+                    <h1>Messages</h1>
+                    <div className="message-to">
+                        <span>To: </span>
+                        <select 
+                            value={selectedUser} 
+                            onChange={(e) => setSelectedUser(e.target.value)}
+                        >
+                            <option value="">Select a user</option>
+                            {interactedUsers.length > 0 ? (
+                                interactedUsers.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.email}
+                                    </option>
+                                ))
+                            ) : (
+                                <option value="">No users available</option>
+                            )}
+                        </select>
+                    </div>
+                </header>
+
+                {/* ReceiveMessage Component */}
+                <ReceiveMessage user={user} selectedUser={selectedUser} />
+
+                {/* SendMessage Component */}
+                <SendMessage user={user} selectedUser={selectedUser} onMessageSent={fetchMessages} />
+            </main>
         </div>
     );
 }

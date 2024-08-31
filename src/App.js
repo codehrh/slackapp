@@ -1,11 +1,14 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import Dashboard from './pages/Dashboard';
+import MessageDashboard from './pages/MessageDashboard';
 import Login from './pages/Login';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
 function App() {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -13,6 +16,7 @@ function App() {
       setIsLoggedIn(true);
     }
   }, []);
+
   const updateUser = (userData) => {
     setUser(userData);
     setIsLoggedIn(!!userData);
@@ -22,6 +26,7 @@ function App() {
       localStorage.removeItem('user');
     }
   };
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -31,11 +36,17 @@ function App() {
       path: "/dashboard",
       element: <Dashboard user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>,
     },
+    {
+      path: "/messages/:channelId", // Ensure this route is defined
+      element: <MessageDashboard user={user} />
+    },
   ]);
+
   return (
     <div className="App">
       <RouterProvider router={router} />
     </div>
   );
 }
+
 export default App;
