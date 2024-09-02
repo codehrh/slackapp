@@ -1,48 +1,101 @@
-import { useEffect, useState } from "react";
-import ChannelService from "../services/ChannelService";
+import { useEffect, useState, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import MessageUserService from "../services/MessageUserService";
+import SendMessage from '../components/SendMessage'; 
+import ReceiveMessage from '../components/ReceiveMessage'; 
 
-//Line 41 need to finish once video has been checked.
+export default function MessageDashboard({ user }) {
+    const { channelId } = useParams();
+    const [interactedUsers, setInteractedUsers] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");  // State to store the search query
+    const [filteredUsers, setFilteredUsers] = useState([]);  // State to store the filtered users
+    const [selectedUser, setSelectedUser] = useState(channelId || "");
+    const [messages, setMessages] = useState([]);
 
-export default function Dashboard(props) {
-    const { setIsLoggedIn, user } = props;
-    const [ channels, setChannels ] = useState ([]);
-    const [ channelFlag, setChannelFlag ] = useState(true);
-    
+    // Fetch interacted users from the API
+    const fetchInteractedUsers = useCallback(async () => {
+        try {
+            const users = await MessageUserService.getInteractedUsers(user);
+            setInteractedUsers(users || []);
+            setFilteredUsers([]);  // Initially hide the filtered list
+            console.log("Fetched users:", users);  // Debugging line to check the fetched data
+        } catch (error) {
+            console.error("Error fetching interacted users:", error);
+        }
+    }, [user]);
 
-    useEffect(()=>{
-       async function getChannels(){
-        await ChannelService.getChannels(user, setChannels)
-       }
-       if(channelFlag){
-        setChannelFlag(false);
-        getChannels();
-       }
-    }, [user, channelFlag]);
+    // Fetch messages between the current user and the selected user
+    const fetchMessages = useCallback(async () => {
+        if (!selectedUser) return;
 
+        try {
+            const messagesData = await MessageUserService.getMessages(selectedUser, user);
+            setMessages(messagesData || []);
+        } catch (error) {
+            console.error("Error fetching messages:", error);
+        }
+    }, [selectedUser, user]);
 
-    function logout() {
-        console.log("Logging out");
-        localStorage.clear();
-        setIsLoggedIn(false);
-    }
+    useEffect(() => {
+        fetchInteractedUsers();
+    }, [fetchInteractedUsers]);
+
+    useEffect(() => {
+        fetchMessages();
+    }, [selectedUser, fetchMessages]);
+
+    // Update filtered users based on search query
+    useEffect(() => {
+        if (searchQuery === "") {
+            setFilteredUsers([]);  // Hide the user list when search query is empty
+        } else {
+            const filtered = interactedUsers.filter((user) =>
+                user.email.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+            console.log("Filtered users:", filtered);  // Debugging line to check the filtering
+        }
+    }, [searchQuery, interactedUsers]);
+
     return (
-        <div>
-            <h1>This is my Dashboard</h1>
-            {/* mapping of channels happens here */}
-            {channels &&
-                channels.map((channel) => {
-                    const { id, name, owner_id } = channel;
-                    return (
-                        <div key={id}>
-                            <p>Channel ID: {id}</p>
-                            <p>Channel Name: {name}</p>
-                            <p>Owner ID: {owner_id}</p>
-                        </div>
-                    );
-                })};
-            {!channels && <div>No Channels Available</div>}
-            <SendMessage></SendMessage>
-            <button onClick={logout}></button>
+        <div className="message-dashboard">
+            <main className="message-content">
+                <header className="message-header">
+                    <h1>Messages</h1>
+                    <div className="message-to">
+                        <span>To: </span>
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Search for a user..."
+                        />
+                        {filteredUsers.length > 0 && (
+                            <ul className="user-list">
+                                {filteredUsers.map((user) => (
+                                    <li
+                                        key={user.id}
+                                        onClick={() => {
+                                            setSelectedUser(user.id);
+                                            setSearchQuery(user.email); // Fill the search bar with selected email
+                                            setFilteredUsers([]);  // Hide the dropdown after selection
+                                        }}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {user.email}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                </header>
+
+                {/* ReceiveMessage Component */}
+                <ReceiveMessage messages={messages} />
+
+                {/* SendMessage Component */}
+                <SendMessage user={user} selectedUser={selectedUser} onMessageSent={fetchMessages} />
+            </main>
         </div>
     );
 }

@@ -1,12 +1,17 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import Dashboard from './pages/Dashboard';
+import MessageDashboard from './pages/MessageDashboard';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import ChannelCreation from './pages/ChannelCreation';
+import Channels from './pages/Channels';
+
 function App() {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -14,6 +19,7 @@ function App() {
       setIsLoggedIn(true);
     }
   }, []);
+
   const updateUser = (userData) => {
     setUser(userData);
     setIsLoggedIn(!!userData);
@@ -23,6 +29,7 @@ function App() {
       localStorage.removeItem('user');
     }
   };
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -33,14 +40,24 @@ function App() {
       element: <Dashboard user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>,
     },
     {
-      path: "/home",
-      element: <Home/>,
+      path: "/messages/:channelId",
+      element: <MessageDashboard user={user} />
     },
+    {
+      path: "/channels",
+      element: <Channels user={user} />
+    },
+    {
+      path: "/create-channel",
+      element: <ChannelCreation user={user} />
+    }
   ]);
+
   return (
     <div className="App">
       <RouterProvider router={router} />
     </div>
   );
 }
+
 export default App;

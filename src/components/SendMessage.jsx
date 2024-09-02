@@ -1,44 +1,46 @@
 import React, { useState } from 'react';
-import MessageUserService from '../services/MessageUserService'; 
+import MessageUserService from '../services/MessageUserService';
 
-function SendMessage({ user }) {
-    const [receiver, setReceiver] = useState('');
-    const [message, setMessage] = useState('');
+function SendMessage({ user, selectedUser, onMessageSent }) {
+    const [newMessage, setNewMessage] = useState("");
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const info = {
-            receiver_id: Number(receiver),
-            receiver_class: "User",
-            body: message,
+
+        // Ensure the selected user and new message are not empty or undefined
+        if (!selectedUser || !newMessage) {
+            console.error('Selected user or message is missing');
+            return;
+        }
+
+        const messageInfo = {
+            receiver_id: selectedUser,
+            receiver_class: selectedUser ? "User" : "Channel",
+            body: newMessage,
         };
+
         try {
-            await MessageUserService.sendMessage(user, info);
+            await MessageUserService.sendMessage(user, messageInfo);
+            setNewMessage(""); // Clear the input after sending
+            onMessageSent(messageInfo); // Immediately show the new message
         } catch (error) {
             console.error('Error sending message:', error);
         }
     }
 
     return (
-        <div>
+        <footer className="message-input">
             <form onSubmit={handleSubmit}>
-                <label>Send to:</label>
-                <input 
-                    type="number" 
-                    value={receiver}
-                    onChange={(event) => setReceiver(event.target.value)} 
-                    required
-                />
-                <label>Message:</label>
                 <input 
                     type="text" 
-                    value={message}
-                    onChange={(event) => setMessage(event.target.value)} 
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type your message"
                     required
                 />
-                <button type="submit">Send Message</button>
+                <button type="submit">Send</button>
             </form>
-        </div>
+        </footer>
     );
 }
 
