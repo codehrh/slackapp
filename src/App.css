@@ -75,3 +75,38 @@ button {
   aspect-ratio: 1;
   padding-right: 2px;
 }
+
+.received-messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  max-width: 80%; /* Adjust as needed */
+  margin: 5px 0;
+}
+
+.message.received {
+  justify-content: flex-start;
+}
+
+.message.sent {
+  justify-content: flex-end;
+}
+
+.message-content {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.message.received .message-content {
+  background-color: #e0f7ff; /* Light blue for received messages */
+  border-top-left-radius: 0;
+}
+
+.message.sent .message-content {
+  background-color: #e0ffe0; /* Light green for sent messages */
+  border-top-right-radius: 0;
+}

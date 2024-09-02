@@ -48,7 +48,14 @@ const MessageUserService = {
                 uid: user.uid,
             };
 
-            const response = await axios.post(`${API_URL}/messages`, info, { headers });
+            // Add sender's information to the message info
+            const messageWithSenderInfo = {
+                ...info,
+                sender_id: user.id,
+                sender_email: user.email,
+            };
+
+            const response = await axios.post(`${API_URL}/messages`, messageWithSenderInfo, { headers });
             return response.data;
         } catch (error) {
             console.error("Error sending message:", error);

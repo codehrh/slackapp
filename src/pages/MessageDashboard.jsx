@@ -7,8 +7,8 @@ import ReceiveMessage from '../components/ReceiveMessage';
 export default function MessageDashboard({ user }) {
     const { channelId } = useParams();
     const [interactedUsers, setInteractedUsers] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");  // State to store the search query
-    const [filteredUsers, setFilteredUsers] = useState([]);  // State to store the filtered users
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(channelId || "");
     const [messages, setMessages] = useState([]);
 
@@ -17,8 +17,7 @@ export default function MessageDashboard({ user }) {
         try {
             const users = await MessageUserService.getInteractedUsers(user);
             setInteractedUsers(users || []);
-            setFilteredUsers([]);  // Initially hide the filtered list
-            console.log("Fetched users:", users);  // Debugging line to check the fetched data
+            setFilteredUsers([]);
         } catch (error) {
             console.error("Error fetching interacted users:", error);
         }
@@ -47,15 +46,19 @@ export default function MessageDashboard({ user }) {
     // Update filtered users based on search query
     useEffect(() => {
         if (searchQuery === "") {
-            setFilteredUsers([]);  // Hide the user list when search query is empty
+            setFilteredUsers([]);
         } else {
             const filtered = interactedUsers.filter((user) =>
                 user.email.toLowerCase().includes(searchQuery.toLowerCase())
             );
             setFilteredUsers(filtered);
-            console.log("Filtered users:", filtered);  // Debugging line to check the filtering
         }
     }, [searchQuery, interactedUsers]);
+
+    // Handle new message being sent
+    const handleNewMessage = (messageInfo) => {
+        setMessages((prevMessages) => [...prevMessages, messageInfo]);
+    };
 
     return (
         <div className="message-dashboard">
@@ -77,8 +80,8 @@ export default function MessageDashboard({ user }) {
                                         key={user.id}
                                         onClick={() => {
                                             setSelectedUser(user.id);
-                                            setSearchQuery(user.email); // Fill the search bar with selected email
-                                            setFilteredUsers([]);  // Hide the dropdown after selection
+                                            setSearchQuery(user.email);
+                                            setFilteredUsers([]);
                                         }}
                                         style={{ cursor: 'pointer' }}
                                     >
@@ -91,10 +94,14 @@ export default function MessageDashboard({ user }) {
                 </header>
 
                 {/* ReceiveMessage Component */}
-                <ReceiveMessage messages={messages} />
+                <ReceiveMessage messages={messages} user={user} />
 
                 {/* SendMessage Component */}
-                <SendMessage user={user} selectedUser={selectedUser} onMessageSent={fetchMessages} />
+                <SendMessage 
+                    user={user} 
+                    selectedUser={selectedUser} 
+                    onMessageSent={handleNewMessage} 
+                />
             </main>
         </div>
     );
