@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Dashboard from './pages/Dashboard';
 import MessageDashboard from './pages/MessageDashboard';
 import Login from './pages/Login';
+import Home from './pages/Home';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ChannelCreation from './pages/ChannelCreation';
 import Channels from './pages/Channels';
