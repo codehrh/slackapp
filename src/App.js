@@ -2,6 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import Home from './pages/Home';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 function App() {
   const [user, setUser] = useState(null);
@@ -30,6 +31,10 @@ function App() {
     {
       path: "/dashboard",
       element: <Dashboard user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>,
+    },
+    {
+      path: "/home",
+      element: <Home/>,
     },
   ]);
   return (
