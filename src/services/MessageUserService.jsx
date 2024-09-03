@@ -12,7 +12,7 @@ const MessageUserService = {
             };
 
             const response = await axios.get(`${API_URL}/users`, { headers });
-            return response.data.data; // Assuming the response contains the list of users in the 'data' field
+            return response.data.data; 
         } catch (error) {
             console.error("Error fetching interacted users:", error);
             throw error;
@@ -20,6 +20,7 @@ const MessageUserService = {
     },
 
     getMessages: async function (receiverId, user) {
+        
         try {
             const headers = {
                 "access-token": user.accessToken,

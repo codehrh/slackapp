@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ChannelService from '../services/ChannelService';
 
-export default function Messages({ channel, user }) {
+export default function ChannelMessages({ channel, user }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [error, setError] = useState(null);
@@ -45,7 +45,7 @@ export default function Messages({ channel, user }) {
         ))}
       </div>
       <form onSubmit={handleSendMessage} className="message-input-container">
-        <input 
+        <input s
           type="text" 
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}

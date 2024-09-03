@@ -29,7 +29,7 @@ function SendMessage({ user, selectedUser, onMessageSent }) {
     }
 
     return (
-        <footer className="message-input">
+        <div className="message-input">
             <form onSubmit={handleSubmit}>
                 <input 
                     type="text" 
@@ -40,7 +40,7 @@ function SendMessage({ user, selectedUser, onMessageSent }) {
                 />
                 <button type="submit">Send</button>
             </form>
-        </footer>
+        </div>
     );
 }
 

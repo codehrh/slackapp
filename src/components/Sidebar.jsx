@@ -5,6 +5,8 @@ import ChannelCreation from './ChannelCreation';
 export default function Sidebar({ user, channels, onChannelCreate, onChannelSelect, selectedChannel }) {
   return (
     <div className="sidebar">
+        <button>Channels</button>
+        <button>Messages</button>
       <h1>Channels</h1>
       <ChannelCreation user={user} onChannelCreate={onChannelCreate} />
       <ChannelList 

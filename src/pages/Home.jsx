@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import Messages from '../components/Messages';
+import ChannelMessages from '../components/ChannelMessages';
 import ChannelService from '../services/ChannelService';
 
 export default function Home({ user }) {
@@ -40,7 +40,7 @@ export default function Home({ user }) {
       />
       <div className="main-content">
         {selectedChannel ? (
-          <Messages channel={selectedChannel} user={user} />
+          <ChannelMessages channel={selectedChannel} user={user} />
         ) : (
           <div>Select a channel to view messages</div>
         )}

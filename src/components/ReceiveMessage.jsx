@@ -3,14 +3,10 @@ import { FaUser } from 'react-icons/fa';
 
 function ReceiveMessage({ messages, user }) {
     return (
-        <div className="received-messages">
+        <div className="messages-container">
             {messages.map((message, index) => {
                 const senderEmail = message.sender_email || ''; 
                 const userEmail = user?.email || '';
-
-                // Debugging: Log emails to ensure they are being correctly identified
-                console.log('Sender Email:', senderEmail);
-                console.log('User Email:', userEmail);
 
                 // Safely check if the sender's email matches the user's email
                 const isSentByUser = senderEmail && userEmail && senderEmail.toLowerCase() === userEmail.toLowerCase();
@@ -30,7 +26,7 @@ function ReceiveMessage({ messages, user }) {
                                 style={{
                                     width: '40px',
                                     height: '40px',
-                                    backgroundColor: '#8A2BE2',  // Violet for received messages
+                                    backgroundColor: '#8A2BE2',  
                                     borderRadius: '50%',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -45,14 +41,14 @@ function ReceiveMessage({ messages, user }) {
                         <div 
                             className="message-content"
                             style={{
-                                backgroundColor: isSentByUser ? '#e0ffe0' : '#e0f7ff',  // Green for sent, blue for received
                                 padding: '10px',
                                 borderRadius: '10px',
-                                maxWidth: '60%',
                                 textAlign: isSentByUser ? 'right' : 'left',
                             }}
                         >
-                            <strong>{senderEmail}:</strong> {message.body}
+                            {/* Show the email of the message sender */}
+                            <strong>{isSentByUser ? 'You' : senderEmail}</strong>
+                            <div>{message.body}</div>
                         </div>
                         {isSentByUser && (
                             <div 
