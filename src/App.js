@@ -35,9 +35,14 @@ function App() {
       path: "/",
       element: <Login setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>,
     },
+    
     {
       path: "/dashboard",
       element: <Dashboard user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>,
+    },
+    {
+      path: "/home",
+      element: <Home user={user} />
     },
     {
       path: "/messages/:channelId",
