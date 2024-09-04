@@ -19,8 +19,7 @@ const MessageUserService = {
         }
     },
 
-    getMessages: async function (receiverId, user) {
-        
+    getMessages: async function (receiverId, user, receiverClass = "User") {
         try {
             const headers = {
                 "access-token": user.accessToken,
@@ -29,9 +28,10 @@ const MessageUserService = {
                 uid: user.uid,
             };
 
+            // Dynamically set the receiver_class based on whether you're fetching for a user or channel
             const response = await axios.get(`${API_URL}/messages`, {
                 headers,
-                params: { receiver_id: receiverId, receiver_class: "User" },
+                params: { receiver_id: receiverId, receiver_class: receiverClass }, // receiver_class can be 'User' or 'Channel'
             });
             return response.data.data; // Assuming the message data is returned under the 'data' key
         } catch (error) {
