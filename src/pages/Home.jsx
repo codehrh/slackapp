@@ -5,12 +5,14 @@ import ChannelService from '../services/ChannelService';
 import MessageUserService from '../services/MessageUserService';
 import SendMessage from '../components/SendMessage';
 import ReceiveMessage from '../components/ReceiveMessage';
+import AddUsersToChannel from '../components/AddUsersToChannel'; // Import AddUsersToChannel component
 
-export default function Messaging({ setIsLoggedIn, user }) {
+export default function Home({ setIsLoggedIn, user }) {
     const { channelId } = useParams(); // Grab channelId from the URL
     const [channels, setChannels] = useState([]);
-    const [selectedChannel, setSelectedChannel] = useState(null); // Replace selectedUser with selectedChannel
+    const [selectedChannel, setSelectedChannel] = useState(null);
     const [messages, setMessages] = useState([]);
+    const [error, setError] = useState(null); // Added error state
 
     // Fetch channels from the API
     const fetchChannels = useCallback(async () => {
@@ -19,6 +21,7 @@ export default function Messaging({ setIsLoggedIn, user }) {
             setChannels(fetchedChannels || []);
         } catch (error) {
             console.error("Error fetching channels:", error);
+            setError('Failed to load channels');
         }
     }, [user]);
 
@@ -49,14 +52,19 @@ export default function Messaging({ setIsLoggedIn, user }) {
 
     // Handle channel selection
     const handleChannelSelect = (channel) => {
-        console.log("Selected channel:", channel); // Log the selected channel
-        setSelectedChannel(channel);  // Set the selected channel instead of user
-        console.log("Selected channel ID:", channel.id);  // Log the selected channel ID
+        console.log("Selected channel:", channel);
+        setSelectedChannel(channel);
+        console.log("Selected channel ID:", channel.id);
     };
 
     // Handle new message being sent
     const handleNewMessage = (messageInfo) => {
         setMessages((prevMessages) => [...prevMessages, messageInfo]);
+    };
+
+    // Handle user added to channel
+    const handleUserAdded = () => {
+        fetchChannels(); // Refresh the channels list
     };
 
     return (
@@ -66,13 +74,22 @@ export default function Messaging({ setIsLoggedIn, user }) {
                 user={user}
                 channels={channels}
                 onChannelCreate={handleChannelCreate}
-                onChannelSelect={handleChannelSelect} // Handle channel selection
-                selectedChannel={selectedChannel} // Pass the selected channel
+                onChannelSelect={handleChannelSelect}
+                selectedChannel={selectedChannel}
             />
             <main className="main-content">
                 <header className="message-header">
                     <h1>{selectedChannel ? selectedChannel.name : "No channel selected"}</h1>
                 </header>
+
+                {/* AddUsersToChannel Component */}
+                {selectedChannel && (
+                    <AddUsersToChannel 
+                        channel={selectedChannel} 
+                        user={user} 
+                        onUserAdded={handleUserAdded}
+                    />
+                )}
 
                 {/* ReceiveMessage Component */}
                 <ReceiveMessage messages={messages} user={user} />
@@ -80,13 +97,14 @@ export default function Messaging({ setIsLoggedIn, user }) {
                 {/* SendMessage Component */}
                 {selectedChannel && (
                     <SendMessage 
-                    user={user}
-                    selectedChannel={selectedChannel}
-                    receiverClass="Channel" 
-                    onMessageSent={handleNewMessage}
-                />
+                        user={user}
+                        selectedChannel={selectedChannel}
+                        receiverClass="Channel" 
+                        onMessageSent={handleNewMessage}
+                    />
                 )}
             </main>
+            {error && <div style={{ color: 'red' }}>{error}</div>} {/* Display error if any */}
         </div>
     );
 }
