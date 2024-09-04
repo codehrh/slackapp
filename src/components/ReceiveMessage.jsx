@@ -13,8 +13,9 @@ function ReceiveMessage({ messages, user }) {
                 const senderEmail = message.sender?.email?.trim().toLowerCase() || 'unknown';
                 const senderName = message.sender?.name || senderEmail;
 
+
                 // Log the sender email and user email for debugging
-                console.log(`Message ${index} - Sender Email: "${senderEmail}", User Email: "${userEmail}"`);
+                // console.log(`Message ${index} - Sender Email: "${senderEmail}", User Email: "${userEmail}"`);
 
                 // Compare sender's email to the current user's email
                 const isSentByUser = senderEmail === userEmail;

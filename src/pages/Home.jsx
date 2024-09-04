@@ -7,9 +7,9 @@ import SendMessage from '../components/SendMessage';
 import ReceiveMessage from '../components/ReceiveMessage';
 
 export default function Messaging({ setIsLoggedIn, user }) {
-    const { channelId } = useParams();
+    const { channelId } = useParams(); // Grab channelId from the URL
     const [channels, setChannels] = useState([]);
-    const [selectedChannel, setSelectedChannel] = useState(null);
+    const [selectedChannel, setSelectedChannel] = useState(null); // Replace selectedUser with selectedChannel
     const [messages, setMessages] = useState([]);
 
     // Fetch channels from the API
@@ -24,7 +24,7 @@ export default function Messaging({ setIsLoggedIn, user }) {
 
     // Fetch messages for the selected channel
     const fetchMessages = useCallback(async () => {
-        if (!selectedChannel) return;
+        if (!selectedChannel) return; // Only fetch messages if a channel is selected
 
         try {
             const messagesData = await MessageUserService.getMessages(selectedChannel.id, user, 'Channel');
@@ -49,7 +49,9 @@ export default function Messaging({ setIsLoggedIn, user }) {
 
     // Handle channel selection
     const handleChannelSelect = (channel) => {
-        setSelectedChannel(channel);
+        console.log("Selected channel:", channel); // Log the selected channel
+        setSelectedChannel(channel);  // Set the selected channel instead of user
+        console.log("Selected channel ID:", channel.id);  // Log the selected channel ID
     };
 
     // Handle new message being sent
@@ -64,8 +66,8 @@ export default function Messaging({ setIsLoggedIn, user }) {
                 user={user}
                 channels={channels}
                 onChannelCreate={handleChannelCreate}
-                onChannelSelect={handleChannelSelect}
-                selectedChannel={selectedChannel}
+                onChannelSelect={handleChannelSelect} // Handle channel selection
+                selectedChannel={selectedChannel} // Pass the selected channel
             />
             <main className="main-content">
                 <header className="message-header">
@@ -77,12 +79,12 @@ export default function Messaging({ setIsLoggedIn, user }) {
 
                 {/* SendMessage Component */}
                 {selectedChannel && (
-                    <SendMessage
-                        user={user}
-                        receiverId={selectedChannel.id}
-                        receiverClass="Channel"
-                        onMessageSent={handleNewMessage}
-                    />
+                    <SendMessage 
+                    user={user}
+                    selectedChannel={selectedChannel}
+                    receiverClass="Channel" 
+                    onMessageSent={handleNewMessage}
+                />
                 )}
             </main>
         </div>
