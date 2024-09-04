@@ -1,16 +1,18 @@
 import { useEffect, useState, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import MessageUserService from "../services/MessageUserService";
 import SendMessage from '../components/SendMessage';
 import ReceiveMessage from '../components/ReceiveMessage';
 
-export default function Messaging({ user }) {
+export default function Messaging({ setIsLoggedIn, user }) {
     const { channelId } = useParams();
     const [interactedUsers, setInteractedUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null); // Store user object
     const [messages, setMessages] = useState([]);
+    const navigate = useNavigate();
+
 
     // Fetch interacted users from the API
     const fetchInteractedUsers = useCallback(async () => {
@@ -55,6 +57,13 @@ export default function Messaging({ user }) {
         }
     }, [searchQuery, interactedUsers]);
 
+    function logout() {
+        console.log("Logging out");
+        localStorage.clear();
+        setIsLoggedIn(false);
+        navigate("/");  // Redirect to the homepage or login page after logout
+    }
+
     // Handle new message being sent
     const handleNewMessage = (messageInfo) => {
         setMessages((prevMessages) => [...prevMessages, messageInfo]);
@@ -97,6 +106,7 @@ export default function Messaging({ user }) {
                             ))}
                         </ul>
                     )}
+                    <button onClick={logout}>Log Out</button>
                 </div>
             </div>
             <main className="main-content">

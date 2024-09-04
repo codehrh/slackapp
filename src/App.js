@@ -49,12 +49,11 @@ function App() {
     },
     {
       path: "/messaging",
-      element: <Messaging user={user} />
+      element: <Messaging user={user} setIsLoggedIn={setIsLoggedIn}/>
     },
     {
       path: "/channels",
-      element: <Channels user={user} />,
-      errorElement: <PageNotFound/>
+      element: <Channels user={user} setIsLoggedIn={setIsLoggedIn}/>
     },
     {
       path: "/create-channel",
