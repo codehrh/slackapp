@@ -1,5 +1,5 @@
 import React from 'react';
-import ChannelList from './Channels';
+import Channels from './Channels';
 import {Link } from "react-router-dom";
 import ChannelCreation from './ChannelCreation';
 
@@ -17,7 +17,7 @@ export default function Sidebar({ user, channels, onChannelCreate, onChannelSele
                         </Link>
                     </div>
       <ChannelCreation user={user} onChannelCreate={onChannelCreate} />
-      <ChannelList 
+      <Channels 
         channels={channels} 
         onChannelSelect={onChannelSelect}
         selectedChannel={selectedChannel}

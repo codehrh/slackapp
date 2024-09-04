@@ -169,8 +169,6 @@ button {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-
-
 .toggle-button.active {
   background-color: var(--dark-purple);
   color: var(--light-purple);
@@ -181,7 +179,27 @@ button {
   color: var(--light-purple);
 }
 
+/* Channels */
 .channel-creation > button {
   padding: 10px;
   margin: 5px;
 }
+
+.channel-list {
+  padding: 10px;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.channel-list::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+.channel-item {
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid var(--dark-purple);
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
