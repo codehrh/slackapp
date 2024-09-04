@@ -7,12 +7,8 @@ export default function Channels({ channels, onChannelSelect, selectedChannel })
       <div className="channel-list">
         {channels.length > 0 ? (
           channels.map((channel) => (
-            <div key={channel.id} className="channel-item">
+            <div onClick={() => onChannelSelect(channel)} key={channel.id} className="channel-item">
               <span>{channel.name}</span>
-              <button onClick={() => onChannelSelect(channel)}>
-                <FontAwesomeIcon icon={faEdit} className='icon' /> 
-                {selectedChannel && selectedChannel.id === channel.id ? 'Selected' : 'Go to Channel'}
-              </button>
             </div>
           ))
         ) : (

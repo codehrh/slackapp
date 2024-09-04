@@ -1,11 +1,22 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import Channels from './Channels';
 import {Link } from "react-router-dom";
 import ChannelCreation from './ChannelCreation';
 
-export default function Sidebar({ user, channels, onChannelCreate, onChannelSelect, selectedChannel }) {
+export default function Sidebar({setIsLoggedIn, user, channels, onChannelCreate, onChannelSelect, selectedChannel }) {
+  const navigate = useNavigate();
+
+  function logout() {
+    console.log("Logging out");
+    localStorage.clear();
+    setIsLoggedIn(false);
+    navigate("/");  // Redirect to the homepage or login page after logout
+}
+
   return (
     <div className="sidebar">
+      
       <div>
       <h1>Channels</h1>
       <div className="toggle-container">
@@ -22,7 +33,10 @@ export default function Sidebar({ user, channels, onChannelCreate, onChannelSele
         onChannelSelect={onChannelSelect}
         selectedChannel={selectedChannel}
       />
+        <button onClick={logout}>Log Out</button>
+
       </div>
+     
     </div>
   );
 }

@@ -45,7 +45,7 @@ export default function ChannelMessages({ channel, user }) {
         ))}
       </div>
       <form onSubmit={handleSendMessage} className="message-input-container">
-        <input s
+        <input 
           type="text" 
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}

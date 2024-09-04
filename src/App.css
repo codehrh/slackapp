@@ -51,8 +51,7 @@ label {
 button {
   border: none;
   padding: none;
-  padding-left: 2.5%;
-  padding-right: 2.5%;
+  padding: 2.5%;
   border-radius: 25px;
   font-weight: bold;
   background-color: var(--dark-purple);
