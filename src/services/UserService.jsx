@@ -2,63 +2,50 @@ import { API_URL } from "../constants/Constants";
 import axios from "axios";
 
 const UserService = {
-    getUsers: async function (user) {
-        console.log("getUsers called with user:", user);
+    // Sign up a new user
+    signUp: async function (info) {
+        // Validate that passwords match before proceeding
+        if (info.password !== info.password_confirmation) {
+            return alert("Passwords don't match");
+        }
+
         try {
-            if (!user || !user.accessToken || !user.expiry || !user.client || !user.uid) {
-                console.error("Invalid user object:", user);
-                throw new Error("Invalid user object");
-            }
+            console.log("Sending signup request to:", `${API_URL}/auth/`);  // Log the request URL
+            console.log("Payload being sent:", info);  // Log the payload
 
-            const headers = {
-                "access-token": user.accessToken,
-                expiry: user.expiry,
-                client: user.client,
-                uid: user.uid,
-            };
-            console.log("Making API request to:", `${API_URL}/users`);
-            console.log("With headers:", headers);
-
-            const response = await axios.get(`${API_URL}/users`, { headers });
+            // Make the POST request to the signup endpoint
+            const response = await axios.post(`${API_URL}/auth/`, info);
             console.log("API response received:", response);
-            
-            if (response.data && Array.isArray(response.data.data)) {
-                const users = response.data.data;
-                const filteredUsers = users.filter((user) => user.id >= 5100);
-                console.log("Filtered users:", filteredUsers);
-                return filteredUsers;
+
+            // Handle the success response
+            if (response.data) {
+                alert("Account creation successful");
+                return response.data;  // Return the created user data
             } else {
                 console.error("Unexpected response format:", response);
-                throw new Error("Invalid response format");
+                throw new Error("Account creation failed with invalid response format");
             }
         } catch (error) {
-            console.error("Error in getUsers:", error);
-            if (axios.isAxiosError(error)) {
-                console.error("Axios error details:", {
-                    message: error.message,
-                    response: error.response,
-                    request: error.request,
-                });
-            }
-            throw error; // Re-throw the error to be handled by the component
-        }
-    },
-    signUp: async function (info) {
-        if(info.password !== info.password_confirmation) {
-            return alert ("Passwords don't match");
-        }
-        try{
-            const response = await axios.post(`${API_URL}/auth/`, info)
-            const {data} = response
-            if(data.data){
-                return alert("Account creation successful")
-            }
-        } catch (error){
-            if (error.response.data.errors) {
-                return alert ("Account creation failed");
+            console.error("Error during signup:", error);
+
+            // Improved error handling
+            if (error.response && error.response.data && error.response.data.errors) {
+                // Check if errors is an object or an array and handle appropriately
+                const errors = error.response.data.errors;
+
+                if (typeof errors === 'object') {
+                    // If errors is an object, format it for display
+                    const errorMessages = Object.keys(errors).map(key => `${key}: ${errors[key]}`).join(', ');
+                    alert(`Account creation failed: ${errorMessages}`);
+                } else {
+                    // Handle other cases where errors might be a string or array
+                    alert(`Account creation failed: ${errors}`);
+                }
+            } else {
+                alert("An unexpected error occurred. Please try again later.");
             }
         }
-    }
+    }    
 }
 
 export default UserService;

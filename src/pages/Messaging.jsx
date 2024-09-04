@@ -95,7 +95,8 @@ export default function Messaging({ setIsLoggedIn, user }) {
                                 <li
                                     key={user.id}
                                     onClick={() => {
-                                        setSelectedUser(user); // Store the entire user object
+                                        setSelectedUser(user); 
+                                        console.log("Selected user:", user);
                                         setSearchQuery(user.email);
                                         setFilteredUsers([]);
                                     }}
