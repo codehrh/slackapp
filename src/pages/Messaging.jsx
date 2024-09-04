@@ -100,12 +100,7 @@ export default function Messaging({ user }) {
             </div>
             <main className="main-content">
                 <header className="message-header">
-                    <h1>Messages</h1>
-                    <div className="message-to">
-                        <span>
-                            To: {selectedUser ? selectedUser.email : "No user selected"}
-                        </span>
-                    </div>
+                    <h1>   To: {selectedUser ? selectedUser.email : "No user selected"}</h1>
                 </header>
 
                 {/* ReceiveMessage Component */}
