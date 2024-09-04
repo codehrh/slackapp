@@ -75,6 +75,7 @@ export default function Messaging({ user }) {
                     </div>
                     <input
                         type="text"
+                        className="sidebar-input"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search for a user..."
