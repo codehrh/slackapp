@@ -1,7 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import Dashboard from './pages/Dashboard';
-import MessageDashboard from './pages/MessageDashboard';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Messaging from './pages/Messaging';
@@ -48,10 +47,6 @@ function App() {
     {
       path: "/messaging",
       element: <Messaging user={user} />
-    },
-    {
-      path: "/messages/:channelId",
-      element: <MessageDashboard user={user} />
     },
     {
       path: "/channels",
