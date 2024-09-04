@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import MessageUserService from "../services/MessageUserService";
 import SendMessage from '../components/SendMessage';
 import ReceiveMessage from '../components/ReceiveMessage';
@@ -9,7 +9,7 @@ export default function Messaging({ user }) {
     const [interactedUsers, setInteractedUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(channelId || "");
+    const [selectedUser, setSelectedUser] = useState(null); // Store user object
     const [messages, setMessages] = useState([]);
 
     // Fetch interacted users from the API
@@ -25,10 +25,10 @@ export default function Messaging({ user }) {
 
     // Fetch messages between the current user and the selected user
     const fetchMessages = useCallback(async () => {
-        if (!selectedUser) return;
+        if (!selectedUser || !selectedUser.id) return;
 
         try {
-            const messagesData = await MessageUserService.getMessages(selectedUser, user);
+            const messagesData = await MessageUserService.getMessages(selectedUser.id, user);
             setMessages(messagesData || []);
         } catch (error) {
             console.error("Error fetching messages:", error);
@@ -63,40 +63,48 @@ export default function Messaging({ user }) {
     return (
         <div className="dashboard">
             <div className="sidebar">
-
-                <h1>Channels</h1>
-                <button>Channels</button>
-                <button>Messages</button>
+                <div>
+                    <h1>Messages</h1>
+                    <div className="toggle-container">
+                        <Link to="/home">
+                            <button className="toggle-button">Channels</button>
+                        </Link>
+                        <Link to="/messaging">
+                            <button className="toggle-button active">Messages</button>
+                        </Link>
+                    </div>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search for a user..."
+                    />
+                    {filteredUsers.length > 0 && searchQuery && (
+                        <ul className="user-list">
+                            {filteredUsers.map((user) => (
+                                <li
+                                    key={user.id}
+                                    onClick={() => {
+                                        setSelectedUser(user); // Store the entire user object
+                                        setSearchQuery(user.email);
+                                        setFilteredUsers([]);
+                                    }}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    {user.email}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             </div>
             <main className="main-content">
                 <header className="message-header">
                     <h1>Messages</h1>
                     <div className="message-to">
-                        <span>To: </span>
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search for a user..."
-                        />
-                        {filteredUsers.length > 0 && searchQuery && (
-                            <ul className="user-list">
-                                {filteredUsers.map((user) => (
-                                    <li
-                                        key={user.id}
-                                        onClick={() => {
-                                            setSelectedUser(user.id);
-                                            setSearchQuery(user.email);
-                                            setFilteredUsers([]);
-                                        }}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        {user.email}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-
+                        <span>
+                            To: {selectedUser ? selectedUser.email : "No user selected"}
+                        </span>
                     </div>
                 </header>
 
@@ -106,7 +114,7 @@ export default function Messaging({ user }) {
                 {/* SendMessage Component */}
                 <SendMessage
                     user={user}
-                    selectedUser={selectedUser}
+                    selectedUser={selectedUser ? selectedUser.id : null}
                     onMessageSent={handleNewMessage}
                 />
             </main>
