@@ -8,6 +8,7 @@ import Messaging from './pages/Messaging';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ChannelCreation from './pages/ChannelCreation';
 import Channels from './pages/Channels';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -40,26 +41,32 @@ function App() {
     {
       path: "/dashboard",
       element: <Dashboard user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>,
+      errorElement: <PageNotFound/>
     },
     {
       path: "/home",
-      element: <Home user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>
+      element: <Home user={user} setUser={updateUser} setIsLoggedIn={setIsLoggedIn}/>,
+      errorElement: <PageNotFound/>
     },
     {
       path: "/messaging",
-      element: <Messaging user={user} />
+      element: <Messaging user={user} />,
+      errorElement: <PageNotFound/>
     },
     {
       path: "/messages/:channelId",
-      element: <MessageDashboard user={user} />
+      element: <MessageDashboard user={user} />,
+      errorElement: <PageNotFound/>
     },
     {
       path: "/channels",
-      element: <Channels user={user} />
+      element: <Channels user={user} />,
+      errorElement: <PageNotFound/>
     },
     {
       path: "/create-channel",
-      element: <ChannelCreation user={user} />
+      element: <ChannelCreation user={user} />,
+      errorElement: <PageNotFound/>
     }
   ]);
 
