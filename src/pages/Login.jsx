@@ -3,7 +3,7 @@ import { API_URL } from '../constants/Constants';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faKey , faUserPlus} from '@fortawesome/free-solid-svg-icons'
-import Dashboard from '../pages/Dashboard';
+import Home from '../pages/Home';
 import SignUp from '../pages/SignUp';
 import { useNavigate } from 'react-router';
 
@@ -28,7 +28,7 @@ function Login() {
     if (user) {
       setIsLoggedIn(true)
       localStorage.setItem("user", JSON.stringify(user))
-      navigate('/dashboard');
+      navigate('/Home');
     }
   }, [user])
 
@@ -98,13 +98,10 @@ function Login() {
           </form>
         )}
         {showSignup && (
-          <SignUp>
-            setShowSignup={setShowSignup}
-            setIsLoggedIn={setIsLoggedIn}
-          </SignUp>
+          <SignUp setShowSignup={setShowSignup} setIsLoggedIn={setIsLoggedIn} />
         )}
         {isLoggedIn && (
-          <Dashboard setIsLoggedIn={setIsLoggedIn} user={user}></Dashboard>
+          <Home setIsLoggedIn={setIsLoggedIn} user={user}></Home>
         )}
       </div>
     </div>
