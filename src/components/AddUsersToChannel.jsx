@@ -62,8 +62,7 @@ export default function AddUsersToChannel({ channel, user, onUserAdded }) {
     };
 
     return (
-        <div className="add-users-to-channel">
-            <h3>Add Users to {channel.name}</h3>
+        <div className="add-users">
             <input
                 type="text"
                 value={searchQuery}

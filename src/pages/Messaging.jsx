@@ -9,10 +9,10 @@ export default function Messaging({ setIsLoggedIn, user }) {
     const [interactedUsers, setInteractedUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null); // Store user object
+    const [selectedUser, setSelectedUser] = useState(null);
     const [messages, setMessages] = useState([]);
+    const [showResults, setShowResults] = useState(true);
     const navigate = useNavigate();
-
 
     // Fetch interacted users from the API
     const fetchInteractedUsers = useCallback(async () => {
@@ -49,11 +49,13 @@ export default function Messaging({ setIsLoggedIn, user }) {
     useEffect(() => {
         if (searchQuery === "") {
             setFilteredUsers([]);
+            setShowResults(false);
         } else {
             const filtered = interactedUsers.filter((user) =>
                 user.email.toLowerCase().includes(searchQuery.toLowerCase())
             );
             setFilteredUsers(filtered);
+            setShowResults(true);
         }
     }, [searchQuery, interactedUsers]);
 
@@ -61,7 +63,7 @@ export default function Messaging({ setIsLoggedIn, user }) {
         console.log("Logging out");
         localStorage.clear();
         setIsLoggedIn(false);
-        navigate("/");  // Redirect to the homepage or login page after logout
+        navigate("/");
     }
 
     // Handle new message being sent
@@ -69,10 +71,17 @@ export default function Messaging({ setIsLoggedIn, user }) {
         setMessages((prevMessages) => [...prevMessages, messageInfo]);
     };
 
+    // Handle user selection
+    const handleUserSelect = (user) => {
+        setSelectedUser(user);
+        setSearchQuery("");
+        setShowResults(false);
+    };
+
     return (
         <div className="dashboard">
             <div className="sidebar">
-                <div>
+                <div className="sidebar-content">
                     <h1>Messages</h1>
                     <div className="toggle-container">
                         <Link to="/home">
@@ -87,38 +96,32 @@ export default function Messaging({ setIsLoggedIn, user }) {
                         className="sidebar-input"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
+                        onFocus={() => setShowResults(true)}
                         placeholder="Search for a user..."
                     />
-                    {filteredUsers.length > 0 && searchQuery && (
+                    {showResults && filteredUsers.length > 0 && (
                         <ul className="user-list">
                             {filteredUsers.map((user) => (
                                 <li
                                     key={user.id}
-                                    onClick={() => {
-                                        setSelectedUser(user); 
-                                        console.log("Selected user:", user);
-                                        setSearchQuery(user.email);
-                                        setFilteredUsers([]);
-                                    }}
-                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => handleUserSelect(user)}
+                                    style={{ cursor: 'pointer', padding: '1%' }}
                                 >
                                     {user.email}
                                 </li>
                             ))}
                         </ul>
                     )}
-                    <button onClick={logout}>Log Out</button>
                 </div>
+                <button className="logout" onClick={logout}>Log Out</button>
             </div>
             <main className="main-content">
                 <header className="message-header">
-                    <h1>   To: {selectedUser ? selectedUser.email : "No user selected"}</h1>
+                    <h1>To: {selectedUser ? selectedUser.email : "No user selected"}</h1>
                 </header>
 
-                {/* ReceiveMessage Component */}
                 <ReceiveMessage messages={messages} user={user} />
 
-                {/* SendMessage Component */}
                 <SendMessage
                     user={user}
                     selectedUser={selectedUser ? selectedUser.id : null}

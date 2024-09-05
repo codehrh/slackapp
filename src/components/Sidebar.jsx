@@ -17,7 +17,7 @@ export default function Sidebar({setIsLoggedIn, user, channels, onChannelCreate,
   return (
     <div className="sidebar">
       
-      <div>
+      <div className='sidebar-content'>
       <h1>Channels</h1>
       <div className="toggle-container">
                         <Link to="/home">
@@ -33,10 +33,10 @@ export default function Sidebar({setIsLoggedIn, user, channels, onChannelCreate,
         onChannelSelect={onChannelSelect}
         selectedChannel={selectedChannel}
       />
-        <button onClick={logout}>Log Out</button>
+       
 
       </div>
-     
+      <button className="logout" onClick={logout}>Log Out</button>
     </div>
   );
 }
