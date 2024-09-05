@@ -75,7 +75,7 @@ function Login() {
 
   return (
     <div className="loginContainer">
-      <h1>This is a h1/Slack</h1>
+      <h1>Avion Slack Project</h1>
       <div className="login">
         {!isLoggedIn && (
           <form onSubmit={handleSubmit}>

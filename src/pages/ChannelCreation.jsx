@@ -19,7 +19,7 @@ export default function ChannelCreation({ user }) {
 
     try {
       await ChannelService.createChannel(user, { name });
-      navigate('/channels'); // Redirect to the channels list page after creation
+      navigate('/channels'); 
     } catch (error) {
       setError('Failed to create channel. Please try again.');
     }

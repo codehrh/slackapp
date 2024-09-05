@@ -22,10 +22,14 @@ export default function Channels({ user }) {
     fetchChannels();
   }, [user]);
 
+  function handleChannelCreation() {
+    navigate('/create-channel', { state : { refresh: true } });
+  }
+
   return (
     <div>
       <h1>Channels</h1>
-      <button onClick={() => navigate('/create-channel')}>Create New Channel</button>
+      <button onClick={handleChannelCreation}>Create New Channel</button>
       {error && <div style={{ color: 'red' }}>{error}</div>}
       {channels.length > 0 ? (
         channels.map((channel) => (
